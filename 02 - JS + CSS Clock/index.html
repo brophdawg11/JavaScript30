@@ -61,36 +61,42 @@
       background:black;
       position: absolute;
       top:50%;
+      border-radius: 50%;
       transform-origin: 100%;
       transform: rotate(90deg);
-      transition: all 0.05s;
+      transition: all 0.5s;
       transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     }
-</style>
 
-<script>
-  const secondHand = document.querySelector('.second-hand');
-  const minsHand = document.querySelector('.min-hand');
-  const hourHand = document.querySelector('.hour-hand');
+    .second-hand {
+        background-color: red;
+        width: 40%;
+        left: 10%;
+    }
+  </style>
 
-  function setDate() {
-    const now = new Date();
+  <script>
+      const secondEl = document.querySelector('.second-hand');
+      const minuteEl = document.querySelector('.min-hand');
+      const hourEl = document.querySelector('.hour-hand');
+      let secondAccum = 0;
 
-    const seconds = now.getSeconds();
-    const secondsDegrees = ((seconds / 60) * 360) + 90;
-    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      function setDate() {
+          let now = new Date(),
+              seconds = (now.getSeconds() / 60) * 360 + 90;
+              minutes = (now.getMinutes() / 60) * 360 + 90;
+              hours = (now.getHours() / 12) * 360 + 90;
+          if (seconds === 90) {
+              secondAccum += 360;
+          }
+          seconds += secondAccum;
+          secondEl.style.transform = `rotate(${seconds}deg)`;
+          minuteEl.style.transform = `rotate(${minutes}deg)`;
+          hourEl.style.transform = `rotate(${hours}deg)`;
+      }
 
-    const mins = now.getMinutes();
-    const minsDegrees = ((mins / 60) * 360) + 90;
-    minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+      setInterval(setDate, 1000);
 
-    const hour = now.getMinutes();
-    const hourDegrees = ((mins / 12) * 360) + 90;
-    hourHand.style.transform = `rotate(${hourDegrees}deg)`;
-  }
-
-  setInterval(setDate, 1000);
-
-</script>
+  </script>
 </body>
 </html>
